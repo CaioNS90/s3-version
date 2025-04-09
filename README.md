@@ -28,5 +28,3 @@ Este projeto tem como objetivo provisionar um bucket S3 na AWS aplicando as prin
   
 ---
 
-## Estrutura do Projeto
-
