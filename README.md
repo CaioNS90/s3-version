@@ -1,30 +1,40 @@
-# Terraform - AWS S3 Bucket com Boas Práticas
+# ☁️ Provisionamento de Bucket S3 com Terraform
 
-Projeto desenvolvido com Terraform para criação de um bucket S3 seguro, versionado, com políticas de ciclo de vida, criptografia, e bloqueio de acesso público.
+## 📄 Descrição
 
-## Objetivo
+Este projeto utiliza o Terraform para provisionar um bucket Amazon S3 com **boas práticas de segurança e gerenciamento de dados**, incluindo:
 
-Este projeto tem como objetivo provisionar um bucket S3 na AWS aplicando as principais boas práticas recomendadas:
-
+- Criptografia no lado do servidor
+- Controle de acesso privado
 - Versionamento de objetos
-- Criptografia em repouso (SSE-S3)
-- Políticas de ciclo de vida:
-  - Transição para S3 Glacier Instant Retrieval após 30 dias
-  - Expiração de objetos após 31 dias
-  - Exclusão de versões antigas após 1 dia
+- Regras de ciclo de vida (expiração e transição para Glacier)
 - Bloqueio de acesso público
-- Política forçando acesso apenas via SSL (opcional)
-- Tags para organização e gestão de custos
 
----
+## 📍 Região
 
-## Pré-requisitos
+Todos os recursos são criados na região:
 
-- Terraform >= 1.x
-- AWS CLI configurado
-- Conta AWS com permissões suficientes:
-  - `AmazonS3FullAccess`
-  - `IAMReadOnlyAccess` (caso utilize backend remoto)
-  
----
+- `us-east-1` (Norte da Virgínia)
 
+## 🔐 Recursos Criados
+
+### ✅ Bucket S3
+
+- **Nome:** `bkt-caionunes21314234` *(editável - deve ser único globalmente)*
+- **Acesso:** Privado (`private`)
+- **Criptografia:** `AES256` (SSE-S3)
+- **Versionamento:** Habilitado
+- **Regras de ciclo de vida:**
+  - Transição para *Glacier Instant Retrieval* após **30 dias**
+  - Expiração da **versão atual** após **31 dias**
+  - Expiração de **versões antigas** após **1 dia**
+
+### 🚫 Bloqueio de Acesso Público
+
+Configuração para garantir que o bucket **não possa ser tornado público**, mesmo que políticas tentem:
+
+```hcl
+block_public_acls       = true
+block_public_policy     = true
+ignore_public_acls      = true
+restrict_public_buckets = true
